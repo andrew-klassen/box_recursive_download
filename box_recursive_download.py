@@ -89,6 +89,7 @@ def download_folder(folder):
                     except:
                         error_log.write(item_full_path)
                         error_log.write('\n')
+                        print("Error: " + item_full_path)
 
                 open_file.close()
 
@@ -96,8 +97,11 @@ def download_folder(folder):
             else:
 
                 # directory is created and then script moves its current working directory to the newly created one
-                os.mkdir(item_name, 0o777)
-                os.chdir(item_name)
+                path_object = Path(item_full_path)
+
+                if not path_object.exists():
+                    os.mkdir(item_name, 0o777)
+                    os.chdir(item_name)
 
                 # this function is called recursively for the new directory
                 download_folder(item_id)
