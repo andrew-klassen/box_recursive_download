@@ -82,7 +82,8 @@ def download_folder(folder):
 
                 if not path_object.exists():
                     os.mkdir(item_name, 0o777)
-                    os.chdir(item_name)
+                
+		os.chdir(item_name)
 
                 # this function is called recursively for the new directory
                 download_folder(item_id)
