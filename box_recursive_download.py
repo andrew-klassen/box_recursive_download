@@ -75,26 +75,7 @@ def download_folder(folder):
         # nothing is done in the event that an item is logged
         if not is_logged(item_full_path):
 
-            if item_type == "file":
-
-                # file is written to the local filesystem here
-                with open(item_name, 'wb') as open_file:
-                    try:
-                        client.file(item_id).download_to(open_file)
-                        print("downloaded: " + item_full_path)
-
-                        # marked so script doesn't acidently try to download it again
-                        item_log.write(item_full_path)
-                        item_log.write('\n')
-                    except:
-                        error_log.write(item_full_path)
-                        error_log.write('\n')
-                        print("Error: " + item_full_path)
-
-                open_file.close()
-
-            # if not a file it must be a directory
-            else:
+            if item_type == "folder":
 
                 # directory is created and then script moves its current working directory to the newly created one
                 path_object = Path(item_full_path)
@@ -113,6 +94,25 @@ def download_folder(folder):
                 # when finished, current working directory goes back to the parent directory
                 os.chdir("..")
 
+            # all other types box returns are files
+            else:
+
+		# file is written to the local filesystem here
+                with open(item_name, 'wb') as open_file:
+                    try:
+                        client.file(item_id).download_to(open_file)
+                        print("downloaded: " + item_full_path)
+
+                        # marked so script doesn't acidently try to download it again
+                        item_log.write(item_full_path)
+                        item_log.write('\n')
+                    except:
+                        error_log.write(item_full_path)
+                        error_log.write('\n')
+                        print("Error: " + item_full_path)
+
+                open_file.close()
+ 
 
 download_folder(box_root_folder)
 
